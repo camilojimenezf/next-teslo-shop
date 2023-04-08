@@ -1,0 +1,40 @@
+### Create a report
+# POST http://localhost:3000/reports
+# content-type: application/json
+
+# {
+#   "make": "tesla",
+#   "model": "model x",
+#   "year": 2020,
+#   "mileage": 10000,
+#   "lng": 0,
+#   "lat": 0,
+#   "price": 900000
+# }
+
+### Run seed
+GET http://localhost:3000/api/seed
+
+### Login User
+POST http://localhost:3000/api/user/login
+content-type: application/json
+
+{
+  "email": "camilo@gmail.com",
+  "password": "123123"
+}
+
+### Register User
+POST http://localhost:3000/api/user/register
+content-type: application/json
+
+{
+  "email": "test@gmail.com",
+  "name": "test",
+  "password": "123123"
+}
+
+### Valida User Token
+GET http://localhost:3000/api/user/validate-token
+content-type: application/json
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDMwMmU3ZGQxYmNhZWU2MjlmM2ZjMjAiLCJlbWFpbCI6ImNhbWlsb0BnbWFpbC5jb20iLCJpYXQiOjE2ODA5NjM0MTgsImV4cCI6MTY4MzU1NTQxOH0.S0n4RJVpdq1XlEhlNaTKKhNK89GfKeQRLNHr2WwJJyQ
