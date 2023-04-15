@@ -26,7 +26,7 @@ const columns: GridColDef[] = [
     sortable: false,
     renderCell: (params: GridRenderCellParams) => {
       return (
-        <NextLink href={`/orders/${params.row.id}`} passHref legacyBehavior>
+        <NextLink href={`/orders/${params.row.orderId}`} passHref legacyBehavior>
           <Link underline='always'>
             Ver orden
           </Link>
@@ -36,22 +36,26 @@ const columns: GridColDef[] = [
   }
 ];
 
-const rows = [
-  { id: 1, paid: true, fullname: 'Camilo Jiménez' },
-  { id: 2, paid: false, fullname: 'Melissa Flores' },
-  { id: 3, paid: true, fullname: 'Hernando Vallejos' },
-  { id: 4, paid: true, fullname: 'Emin Reyes' },
-  { id: 5, paid: false, fullname: 'Ryan Garcia' },
-  { id: 6, paid: false, fullname: 'Gervonta Davis' },
-  { id: 7, paid: true, fullname: 'Canelo Alvaréz' },
-];
+interface Props {
+  orders: IOrder[],
+}
 
-export const HistoryPage = () => {
+export const HistoryPage: FC<Props> = ({ orders }) => {
+  console.log(orders);
+  const rows = orders.map((order, i) => {
+    return {
+      id: i + 1,
+      paid: order.isPaid,
+      fullname: `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`,
+      orderId: order._id,
+    }
+  })
+
   return (
     <ShopLayout title='Historial de ordenes' pageDescription='Historial de ordenes del cliente'>
       <Typography variant='h1'> Historial de ordenes</Typography>
 
-      <Grid container>
+      <Grid container className='fadeIn'>
         <Grid item xs={12} sx={{ height: 650, width: '100%' }}>
           <DataGrid
             rows={rows}
@@ -63,6 +67,36 @@ export const HistoryPage = () => {
       </Grid>
     </ShopLayout>
   )
+}
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+import { GetServerSideProps } from 'next'
+import { FC } from 'react';
+import { getSession } from 'next-auth/react';
+import { dbOrders } from '../../database';
+import { IOrder } from '../../interfaces/order';
+import { ShippingAddress } from '../../context/cart/CartProvider';
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session: any = await getSession({ req });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/auth/login?p=/orders/history',
+        permanent: false,
+      }
+    }
+  }
+
+  const orders = await dbOrders.getOrdersByUser(session.user._id);
+
+  return {
+    props: {
+      orders,
+    }
+  }
 }
 
 export default HistoryPage;

@@ -21,8 +21,8 @@ import { NextResponse, type NextRequest } from 'next/server'
 //   }
 // };
 
-export async function middleware(req: NextRequest) {
-  const session = await getToken({ req, secret: process.env.NEXT_AUTH_SECRET });
+export async function middleware(req: NextRequest | any) {
+  const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
   if (!session) {
     const requestedPage = req.nextUrl.pathname;

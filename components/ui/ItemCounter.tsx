@@ -11,18 +11,14 @@ interface Props {
 export const ItemCounter: FC<Props> = ({currentValue, maxValue, updateQuantity}) => {
   return (
     <Box display='flex' alignItems='center'>
-      <IconButton disabled={currentValue <= 1}>
-        <RemoveCircleOutline
-          onClick={() => updateQuantity(currentValue - 1)}
-        />
+      <IconButton disabled={currentValue <= 1} onClick={() => updateQuantity(currentValue - 1)}>
+        <RemoveCircleOutline/>
       </IconButton>
       <Typography sx={{ width: 40, textAlign: 'center' }}>
         {currentValue}
       </Typography>
-      <IconButton disabled={currentValue === maxValue}>
-        <AddCircleOutline
-          onClick={() => updateQuantity(currentValue + 1)}
-        />
+      <IconButton disabled={currentValue === maxValue} onClick={() => updateQuantity(currentValue + 1)}>
+        <AddCircleOutline />
       </IconButton>
     </Box>
   )

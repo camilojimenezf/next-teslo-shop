@@ -1,4 +1,4 @@
-import NextAuth, { AuthOptions } from "next-auth"
+import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
 import { dbUsers } from "../../../database";
@@ -13,8 +13,9 @@ declare module "next-auth" {
   }
 };
 
-export const authOptions: AuthOptions = {
-  secret: process.env.NEXT_AUTH_SECRET,
+export const authOptions = {
+  debug: true,
+  secret: process.env.NEXTAUTH_SECRET,
   // Configure one or more authentication providers
   providers: [
     Credentials({
@@ -44,8 +45,9 @@ export const authOptions: AuthOptions = {
     updateAge: 86400,
   },
   callbacks: {
-    async jwt({ token, account, user }) {
-      console.log({ token, account, user });
+    async jwt({ token, account, user, ...rest }: any) {
+      console.log('nextauth... callbacks-jwt');
+      console.log({ token, account, user, rest });
       if (account) {
         token.accessToken = account.access_token;
 
@@ -61,12 +63,14 @@ export const authOptions: AuthOptions = {
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: any) {
+      console.log('nextauth... session')
+      console.log({session, token});
       session.accessToken = token.accessToken as any;
       session.user = token.user as any;
       return session;
     }
   }
-}
+} as any;
 
 export default NextAuth(authOptions)
