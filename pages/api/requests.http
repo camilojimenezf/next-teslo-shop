@@ -38,3 +38,12 @@ content-type: application/json
 GET http://localhost:3000/api/user/validate-token
 content-type: application/json
 Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDMwMmU3ZGQxYmNhZWU2MjlmM2ZjMjAiLCJlbWFpbCI6ImNhbWlsb0BnbWFpbC5jb20iLCJpYXQiOjE2ODA5NjM0MTgsImV4cCI6MTY4MzU1NTQxOH0.S0n4RJVpdq1XlEhlNaTKKhNK89GfKeQRLNHr2WwJJyQ
+
+### Pagar una orden
+POST http://localhost:3000/api/orders/pay
+content-type: application/json
+
+{
+  "transactionId": "",
+  "orderId": "",
+}
