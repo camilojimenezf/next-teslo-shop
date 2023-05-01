@@ -18,7 +18,7 @@ export const ProductSlideshow: FC<Props> = ({ images }) => {
          {images.map((productImg, index)=> (
             <div className={styles['each-slide']} key={index}>
               <div style={{
-                backgroundImage: `url(/products/${productImg})`,
+                backgroundImage: `url(${productImg})`,
                 backgroundSize: 'cover'
               }}>
                 {/* <span>{productImg.caption}</span> */}
